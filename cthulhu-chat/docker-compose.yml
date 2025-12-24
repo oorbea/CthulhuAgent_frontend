@@ -1,0 +1,12 @@
+services:
+  cthulhu-frontend:
+    build: .
+    container_name: cthulhu-assistant-frontend
+    ports:
+      - "8080:80"
+    networks:
+      - public-net
+    restart: unless-stopped
+networks:
+  public-net:
+    external: true
