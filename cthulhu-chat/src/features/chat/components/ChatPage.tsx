@@ -53,7 +53,7 @@ export function ChatPage() {
       {/* Full width container */}
       <div
         className="flex-1 flex flex-col w-full px-4 sm:px-8 lg:px-16 min-h-0"
-        style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
+        style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1 1 auto', minHeight: 0, overflow: 'hidden' }}
       >
         {/* Header - compact on mobile */}
         <header className="flex-shrink-0 glass-panel mt-2 sm:mt-4 rounded-xl sm:rounded-2xl 
@@ -84,8 +84,11 @@ export function ChatPage() {
         </header>
 
         {/* Main chat area - fills available space */}
-        <main className="flex-1 flex flex-col min-h-0 my-2 sm:my-4 
-                         glass-panel rounded-xl sm:rounded-2xl shadow-abyss overflow-hidden relative z-10">
+        <main
+          className="flex-1 flex flex-col min-h-0 my-2 sm:my-4 
+                     glass-panel rounded-xl sm:rounded-2xl shadow-abyss overflow-hidden relative z-10"
+          style={{ flex: '1 1 auto', minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+        >
           <MessageList messages={messages} isStreaming={isStreaming} />
         </main>
 
