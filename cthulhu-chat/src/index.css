@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --eldritch: #00ff9d;
+  --bio: #00d4ff;
+  --void: #8b5cf6;
+  --abyss-deep: #020810;
+  --abyss-mid: #081a2e;
+}
+
+/* Smooth scrollbar for the deep ocean theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--abyss-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--bio), var(--void));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--eldritch), var(--bio));
+}
+
+/* Base html/body styling - prevent page scroll */
+html,
+body {
+  height: 100%;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(180deg, #020810 0%, #081a2e 50%, #0d2847 100%);
+}
+
+/* Glassmorphism base class */
+@layer components {
+  .glass-panel {
+    background: rgba(8, 26, 46, 0.6);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-panel-light {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Skeuomorphic bubble button */
+  .btn-bubble {
+    position: relative;
+    background: linear-gradient(145deg, rgba(0, 212, 255, 0.3), rgba(0, 255, 157, 0.15));
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    box-shadow:
+      0 4px 15px rgba(0, 212, 255, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .btn-bubble:hover {
+    background: linear-gradient(145deg, rgba(0, 212, 255, 0.4), rgba(0, 255, 157, 0.25));
+    box-shadow:
+      0 6px 25px rgba(0, 212, 255, 0.35),
+      inset 0 2px 4px rgba(255, 255, 255, 0.15),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-bubble:active {
+    transform: translateY(0);
+    box-shadow:
+      0 2px 10px rgba(0, 212, 255, 0.2),
+      inset 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Eldritch primary button */
+  .btn-eldritch {
+    background: linear-gradient(145deg, rgba(0, 255, 157, 0.4), rgba(0, 204, 125, 0.3));
+    border: 1px solid rgba(0, 255, 157, 0.5);
+    box-shadow:
+      0 4px 20px rgba(0, 255, 157, 0.25),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-eldritch:hover {
+    background: linear-gradient(145deg, rgba(0, 255, 157, 0.55), rgba(0, 204, 125, 0.4));
+    box-shadow:
+      0 6px 30px rgba(0, 255, 157, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Bioluminescent glow effect for text */
+  .text-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+  }
+
+  .text-glow-subtle {
+    text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+  }
+}
+
+/* Animated ocean background effect */
+@layer utilities {
+  .ocean-bg {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ocean-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0, 255, 157, 0.04) 0%, transparent 60%);
+    animation: ocean-shift 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes ocean-shift {
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    33% {
+      opacity: 0.85;
+      transform: translate(-2%, 1%);
+    }
+
+    66% {
+      opacity: 0.95;
+      transform: translate(1%, -1%);
+    }
+  }
+}
+
+/* Typing indicator animation */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--eldritch);
+  animation: typing-bounce 1.4s infinite ease-in-out;
+  box-shadow: 0 0 8px var(--eldritch);
+}
+
+.typing-indicator span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-bounce {
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Input focus glow */
+.input-abyss:focus {
+  box-shadow:
+    0 0 0 2px rgba(0, 212, 255, 0.3),
+    0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+/* Eldritch input field styles */
+.input-eldritch {
+  background: rgba(2, 8, 16, 0.8);
+  border: 2px solid rgba(0, 255, 157, 0.25);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(0, 255, 157, 0.1);
+  transition: all 0.2s ease;
+}
+
+.input-eldritch:focus {
+  animation: eldritch-shake 0.3s ease-out, eldritch-pulse 2s ease-in-out infinite;
+  border-color: rgba(0, 255, 157, 0.6);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 255, 157, 0.3),
+    0 0 40px rgba(0, 255, 157, 0.1);
+}
+
+@keyframes eldritch-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10% {
+    transform: translateX(-3px);
+  }
+
+  20% {
+    transform: translateX(3px);
+  }
+
+  30% {
+    transform: translateX(-2px);
+  }
+
+  40% {
+    transform: translateX(2px);
+  }
+
+  50% {
+    transform: translateX(-1px);
+  }
+
+  60% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes eldritch-pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.5),
+      0 0 15px rgba(0, 255, 157, 0.25),
+      0 0 30px rgba(0, 255, 157, 0.1);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.5),
+      0 0 25px rgba(0, 255, 157, 0.4),
+      0 0 50px rgba(0, 255, 157, 0.2);
+  }
+}
