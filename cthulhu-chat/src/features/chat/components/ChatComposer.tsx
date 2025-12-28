@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 
 export function ChatComposer({
   isStreaming,
@@ -9,54 +9,77 @@ export function ChatComposer({
   onSend: (text: string) => void;
   onStop: () => void;
 }) {
-  const [text, setText] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const inputRef = useRef<HTMLDivElement>(null);
 
-  // Auto-resize textarea
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
-    }
-  }, [text]);
+  const getText = useCallback(() => {
+    return inputRef.current?.innerText || "";
+  }, []);
 
-  const handleSubmit = () => {
-    if (text.trim() && !isStreaming) {
+  const handleSubmit = useCallback(() => {
+    const text = getText().trim();
+    if (text && !isStreaming) {
       onSend(text);
-      setText("");
+      if (inputRef.current) {
+        inputRef.current.innerText = "";
+        setIsEmpty(true);
+      }
     }
-  };
+  }, [getText, isStreaming, onSend]);
+
+  const handleInput = useCallback(() => {
+    const text = getText();
+    setIsEmpty(!text.trim());
+  }, [getText]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  }, [handleSubmit]);
+
+  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData("text/plain");
+    document.execCommand("insertText", false, text);
+  }, []);
 
   return (
     <div className="p-3 sm:p-4 bg-gradient-to-t from-abyss-900/90 to-transparent backdrop-blur-md">
-      <div className="max-w-3xl mx-auto">
+      <div className="w-full">
         {/* Modern pill-shaped input container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-1.5 sm:p-2">
           <form
-            className="flex items-end gap-2"
+            className="flex items-end gap-2 sm:gap-3"
+            style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', gap: '8px' }}
             onSubmit={(e) => {
               e.preventDefault();
               handleSubmit();
             }}
           >
-            {/* Auto-resizing textarea */}
-            <textarea
-              ref={textareaRef}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit();
-                }
-              }}
-              placeholder="Susurra al vacío..."
-              className="flex-1 resize-none bg-transparent px-3 sm:px-4 py-2.5 sm:py-3 
-                         text-sm sm:text-base text-white placeholder:text-bio-500/60
-                         outline-none min-h-[44px] max-h-[150px] leading-relaxed"
-              rows={1}
-            />
+            {/* WhatsApp-style dynamic input */}
+            <div className="flex-1 relative min-w-0" style={{ flex: '1 1 auto', minWidth: 0 }}>
+              {isEmpty && (
+                <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-bio-400/40 pointer-events-none text-sm sm:text-base z-10">
+                  Susurra al vacío...
+                </div>
+              )}
+              <div
+                ref={inputRef}
+                contentEditable
+                role="textbox"
+                aria-label="Mensaje"
+                onInput={handleInput}
+                onKeyDown={handleKeyDown}
+                onPaste={handlePaste}
+                className="input-eldritch px-4 sm:px-5 py-3 sm:py-3.5 text-sm sm:text-base text-white
+                           outline-none min-h-[48px] max-h-[150px] overflow-y-auto
+                           leading-relaxed break-words whitespace-pre-wrap
+                           rounded-xl sm:rounded-2xl"
+                style={{ wordBreak: 'break-word' }}
+              />
+            </div>
 
             {/* Action button - icon style */}
             {isStreaming ? (
@@ -82,7 +105,7 @@ export function ChatComposer({
             ) : (
               <button
                 type="submit"
-                disabled={!text.trim()}
+                disabled={isEmpty}
                 className="flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl
                            btn-eldritch flex items-center justify-center
                            disabled:opacity-40 disabled:cursor-not-allowed
@@ -114,3 +137,4 @@ export function ChatComposer({
     </div>
   );
 }
+
