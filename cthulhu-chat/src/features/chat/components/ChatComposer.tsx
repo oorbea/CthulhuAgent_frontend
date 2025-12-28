@@ -74,10 +74,15 @@ export function ChatComposer({
                 onKeyDown={handleKeyDown}
                 onPaste={handlePaste}
                 className="input-eldritch px-4 sm:px-5 py-3 sm:py-3.5 text-sm sm:text-base text-white
-                           outline-none min-h-[48px] max-h-[150px] overflow-y-auto
+                           outline-none min-h-[48px]
                            leading-relaxed break-words whitespace-pre-wrap
                            rounded-xl sm:rounded-2xl"
-                style={{ wordBreak: 'break-word' }}
+                style={{
+                  wordBreak: 'break-word',
+                  maxHeight: '50vh',
+                  overflowY: 'auto',
+                  overflowX: 'hidden'
+                }}
               />
             </div>
 
