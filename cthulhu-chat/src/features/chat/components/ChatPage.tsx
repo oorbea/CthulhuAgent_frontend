@@ -1,10 +1,30 @@
 import { useChat } from "../hooks/useChat";
+import { useHealthCheck } from "../hooks/useHealthCheck";
 import { MessageList } from "./MessageList";
 import { ChatComposer } from "./ChatComposer";
 import { LOADING_MESSAGES } from "../constants/errorMessages";
 
 export function ChatPage() {
   const { messages, isStreaming, sendMessage, stopStreaming, resetChat } = useChat();
+  const { status: connectionStatus } = useHealthCheck();
+
+  // Determine display status
+  const getStatusDisplay = () => {
+    if (isStreaming) {
+      return { text: LOADING_MESSAGES.STREAMING, color: "bg-eldritch animate-pulse shadow-glow" };
+    }
+    switch (connectionStatus) {
+      case "connected":
+        return { text: "Conectado", color: "bg-eldritch" };
+      case "disconnected":
+        return { text: "Desconectado", color: "bg-red-500" };
+      case "checking":
+      default:
+        return { text: "Verificando...", color: "bg-yellow-500 animate-pulse" };
+    }
+  };
+
+  const statusDisplay = getStatusDisplay();
 
   return (
     <div className="h-screen flex flex-col ocean-bg bg-ocean-depth text-white font-sans overflow-hidden">
@@ -18,17 +38,14 @@ export function ChatPage() {
           <h1 className="text-lg sm:text-2xl font-display font-semibold tracking-tight text-eldritch text-glow-subtle truncate">
             Cthulhu Assistant
           </h1>
-          <p className="text-xs sm:text-sm text-bio-400/80 hidden sm:block">
-            Streaming chat · AG-UI over SSE
-          </p>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           {/* Status indicator */}
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isStreaming ? "bg-eldritch animate-pulse shadow-glow" : "bg-bio-600"}`} />
+            <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${statusDisplay.color}`} />
             <span className="text-[10px] sm:text-xs text-bio-300 hidden xs:inline">
-              {isStreaming ? LOADING_MESSAGES.STREAMING : "Conectado"}
+              {statusDisplay.text}
             </span>
           </div>
           <button
