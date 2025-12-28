@@ -31,11 +31,17 @@
   background: linear-gradient(180deg, var(--eldritch), var(--bio));
 }
 
-/* Base body styling */
+/* Base html/body styling - prevent page scroll */
+html,
+body {
+  height: 100%;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: linear-gradient(180deg, #020810 0%, #081a2e 50%, #0d2847 100%);
-  min-height: 100vh;
 }
 
 /* Glassmorphism base class */

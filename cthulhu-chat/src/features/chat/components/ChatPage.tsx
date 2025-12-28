@@ -33,8 +33,10 @@ export function ChatPage() {
         display: 'flex',
         flexDirection: 'column',
         background: 'linear-gradient(to bottom, #020617, #0c1829, #0f2133)',
-        minHeight: '100vh',
-        width: '100%'
+        height: '100vh',
+        maxHeight: '100vh',
+        width: '100%',
+        overflow: 'hidden'
       }}
     >
       {/* Animated background layer */}
