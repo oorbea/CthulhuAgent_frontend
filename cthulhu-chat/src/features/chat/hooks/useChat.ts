@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import type { ChatMessage } from "../../../domain/chat/types";
 import { streamAssistantReply } from "../api/chatService";
+import { getThemedErrorMessage } from "../constants/errorMessages";
 
 const uid = () => crypto.randomUUID();
 
@@ -38,14 +39,19 @@ export function useChat() {
         },
         controller.signal
       );
-    } catch {
+    } catch (error) {
+      // Skip abort errors (user cancelled)
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
+
       setMessages((prev) => {
         const copy = [...prev];
         const last = copy[copy.length - 1];
         if (last?.role === "assistant" && last.content.length === 0) {
           copy[copy.length - 1] = {
             ...last,
-            content: "An error occurred while streaming the response. Please try again.",
+            content: getThemedErrorMessage(error),
           };
         }
         return copy;

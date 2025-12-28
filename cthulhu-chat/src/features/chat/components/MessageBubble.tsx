@@ -1,4 +1,5 @@
 import type { ChatMessage } from "../../../domain/chat/types";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
@@ -7,11 +8,19 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
         className={[
-          "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
-          isUser ? "bg-indigo-600 text-white shadow" : "bg-zinc-900 border border-zinc-800 text-zinc-100",
+          "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed transition-all duration-300",
+          isUser
+            ? "bg-gradient-to-br from-void-500/40 to-void-700/30 border border-void-400/40 text-white shadow-glow-void"
+            : "glass-panel text-bio-50 shadow-glow-bio/20",
         ].join(" ")}
       >
-        <div className="whitespace-pre-wrap">{message.content || (isUser ? "" : "...")}</div>
+        {isUser ? (
+          <div className="whitespace-pre-wrap">{message.content}</div>
+        ) : message.content ? (
+          <MarkdownRenderer content={message.content} />
+        ) : (
+          <div className="text-bio-400">...</div>
+        )}
       </div>
     </div>
   );
