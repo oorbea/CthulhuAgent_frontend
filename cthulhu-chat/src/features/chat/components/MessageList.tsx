@@ -25,8 +25,7 @@ export function MessageList({ messages, isStreaming }: MessageListProps) {
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto p-3 sm:p-4 flex flex-col gap-2 sm:gap-3"
-      style={{ flex: '1 1 auto', overflowY: 'auto', minHeight: 0 }}
+      className="flex-1 overflow-y-auto p-3 sm:p-4 flex flex-col gap-2 sm:gap-3 overscroll-y-contain"
     >
       {messages.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">
