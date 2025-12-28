@@ -27,34 +27,12 @@ export function ChatPage() {
   const statusDisplay = getStatusDisplay();
 
   return (
-    <div
-      className="h-screen flex flex-col ocean-bg bg-ocean-depth text-white font-sans overflow-hidden"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'linear-gradient(to bottom, #020617, #0c1829, #0f2133)',
-        height: '100vh',
-        maxHeight: '100vh',
-        width: '100%',
-        overflow: 'hidden'
-      }}
-    >
+    <div className="h-[100dvh] flex flex-col ocean-bg bg-ocean-depth text-white font-sans overflow-hidden">
       {/* Animated background layer */}
-      <div
-        className="fixed inset-0 -z-10"
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'linear-gradient(to bottom, #020617, #0c1829, #0f2133)',
-          zIndex: -10
-        }}
-      />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#020617] via-[#0c1829] to-[#0f2133]" />
 
       {/* Full width container */}
-      <div
-        className="flex-1 flex flex-col w-full px-4 sm:px-8 lg:px-16 min-h-0"
-        style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1 1 auto', minHeight: 0, overflow: 'hidden' }}
-      >
+      <div className="flex-1 flex flex-col w-full px-4 sm:px-8 lg:px-16 min-h-0">
         {/* Header - compact on mobile */}
         <header className="flex-shrink-0 glass-panel mt-2 sm:mt-4 rounded-xl sm:rounded-2xl 
                            px-3 sm:px-6 py-2.5 sm:py-4 flex items-center justify-between relative z-10">
@@ -83,12 +61,9 @@ export function ChatPage() {
           </div>
         </header>
 
-        {/* Main chat area - fills available space */}
-        <main
-          className="flex-1 flex flex-col min-h-0 my-2 sm:my-4 
-                     glass-panel rounded-xl sm:rounded-2xl shadow-abyss overflow-hidden relative z-10"
-          style={{ flex: '1 1 auto', minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
-        >
+        {/* Main chat area - fills available space with increased vertical margins */}
+        <main className="flex-1 flex flex-col min-h-0 my-4 sm:my-6 
+                         glass-panel rounded-xl sm:rounded-2xl shadow-abyss overflow-hidden relative z-10">
           <MessageList messages={messages} isStreaming={isStreaming} />
         </main>
 
